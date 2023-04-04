@@ -20,6 +20,7 @@ int inputElection()
 		getline(cin, Election[j].Name);
 
 		cout << "Enter Election description:" << endl;
+		cin.ignore();
 		getline(cin, Election[j].Description);
 
 		Election[j].ID = 100000 + j;
