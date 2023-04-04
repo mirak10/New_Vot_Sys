@@ -17,10 +17,10 @@ int inputElection()
 	do
 	{
 		cout << "Enter Election name:" << endl;
-		cin >> Election[j].Name;
+		getline(cin, Election[j].Name);
 
 		cout << "Enter Election description:" << endl;
-		cin >> Election[j].Description;
+		getline(cin, Election[j].Description);
 
 		Election[j].ID = 100000 + j;
 		cout << "The ELection ID is: " << Election[j].ID << endl;
@@ -32,7 +32,9 @@ int inputElection()
 		cout << "Enter nominees names" << endl;
 		for (int i = 0; i < size; i++) //nominees input
 		{
-			cin >> Election[j].Nominees[i];
+			cin.ignore();
+			getline(cin, Election[j].Nominees[i]);
+			
 		}
 
 		cout << " Do you want to add more elections? (y / n ) " << endl;
