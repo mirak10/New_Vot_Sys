@@ -37,7 +37,7 @@ int inputElection()
 			getline(cin, Election[j].Nominees[i]);
 			
 		}
-
+		j++;
 		cout << " Do you want to add more elections? (y / n ) " << endl;
 		cin >> answer;
 	} while (answer == 'y' || answer == 'Y');
@@ -51,9 +51,11 @@ void displayElection()
 	for (int i = 1; i < j; i++)
 	{
 		cout << "Election name:\t" << Election[i].Name << '\t';
-		cout << Election[i].Description << '\t';
+		cout << Election[i].Description << '\t' << endl;
+		cout << "Nominees are:\t";
+
 		for (int k = 0; k < 6; k++) //nominees output
-			cout << Election[i].Nominees[k] << endl;
+			cout << Election[i].Nominees[k] << '\t';
 	}
 }
 int main()
