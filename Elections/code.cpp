@@ -32,9 +32,7 @@ int inputElection(int& size)
 		cout << "Enter nominees names" << endl;
 		for (int i = 1; i <= size; i++) //nominees input
 		{
-			cin.ignore();
 			getline(cin, Election[j].Nominees[i]);
-			
 		}
 		j++;
 		cout << " Do you want to add more elections? (y / n ) " << endl;
@@ -45,14 +43,16 @@ int inputElection(int& size)
 
 void displayElection()
 {
-	int n = 0;
+	int n = 0; //n is the nominee size
 	cout << "The registered elections and their candidates are: " << endl;
 
 	for (int i = 1; i < j; i++)
 	{
 		
 		cout << "Election name:\t" << Election[i].Name << '\t';
-		cout << Election[i].Description << '\t';
+		cout << Election[i].Description << '\t' << endl;
+		cout << "Nominees are:\t";
+
 		int inputElection(n);
 		for (int k = 1; k <= n; k++) //nominees output
 			cout << Election[i].Nominees[k] << endl;
