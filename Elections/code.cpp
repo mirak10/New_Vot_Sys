@@ -299,17 +299,18 @@ void admin_menu()
             int n;
             inputElection(n);
             displayElection_only();
+            system("cls");
             break;
 
         case 3:
 
             admin_edit_choices();
-
+            system("cls");
             break;
 
         case 4:
             cout << "\n\n You are logged out successfully !\n\n" << endl;
-
+            system("cls");
             break;
             main();
 
@@ -370,6 +371,7 @@ void edit_Election_Description()
     if (i <= j)
     {
         cout << "Enter the Updated Election description:" << endl;
+        cin.ignore();
         getline(cin, Election[i].Description);
     }
     else
