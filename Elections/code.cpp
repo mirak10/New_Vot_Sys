@@ -218,7 +218,6 @@ int inputElection(int& size)//Election registration function
         getline(cin, Election[j].Name);
 
         cout << "Enter Election description:" << endl;
-        cin.ignore();
         getline(cin, Election[j].Description);
 
         Election[j].ID = 100000 + j;
@@ -229,9 +228,9 @@ int inputElection(int& size)//Election registration function
         cin >> size;
 
         cout << "Enter nominees names" << endl;
+        cin.ignore();
         for (int i = 1; i <= size; i++) //nominees input
         {
-            cin.ignore();
             getline(cin, Election[j].Nominees[i]);
 
         }
@@ -251,12 +250,13 @@ void displayElection() //Election display function
         cout << Election[i].ID << '\t';
         cout << "Election name:\t" << Election[i].Name << '\t';
         cout << Election[i].Description << '\t' << endl;
-        cout << "Nominees are:\t";
 
-
-
+        cout << "Nominees are:" << endl;
         for (int k = 1; k <= 6; k++) //nominees output
-            cout << Election[i].Nominees[k] << '\t';
+        {
+            cout << k << ".\t" << Election[i].Nominees[k] << endl;
+        }
+
     }
 }
 void displayElection_only()//Displays the registered elections only
@@ -272,43 +272,6 @@ void displayElection_only()//Displays the registered elections only
             cout << Election[i].Description << '\t' << endl;
         }
     }
-}
-int edit_Election_Description(int& size)
-{
-    int result = j;
-    char answer;
-    do
-    {
-        cout << "Enter Election description:" << endl;
-        cin.ignore();
-        getline(cin, Election[j].Description);
-
-        cout << " Do you want to add more elections? (y / n ) " << endl;
-        cin >> answer;
-    } while (answer == 'y' || answer == 'Y');
-    return result;
-}
-int Edit_Nominee(int& size)//Election registration function
-{
-    int result = j;
-    char answer;
-    do
-    {
-        cout << "How many nominees do you want to register?" << endl;
-        cin >> size;
-
-        cout << "Enter nominees names" << endl;
-        for (int i = 1; i <= size; i++) //nominees input
-        {
-            cin.ignore();
-            getline(cin, Election[j].Nominees[i]);
-
-        }
-        j++;
-        cout << " Do you want to add more elections? (y / n ) " << endl;
-        cin >> answer;
-    } while (answer == 'y' || answer == 'Y');
-    return result;
 }
 void admin_menu()
 {
@@ -402,7 +365,7 @@ void edit_Election_Description()
     cout << "Enter the ID of the Election to be edited" << endl;
     cin >> i;
 
-    i = 100000 - i;
+    i = i - 100000;
 
     if (i <= j)
     {
@@ -410,7 +373,7 @@ void edit_Election_Description()
         getline(cin, Election[i].Description);
     }
     else
-        cout << "nvalid Election ID.";
+        cout << "Invalid Election ID.";
 
     displayElection_only();
 }
@@ -419,25 +382,26 @@ void Edit_Nominee()
     int i,//The election ID index
         n;//The nominees index
 
-    displayElection_only();
+    displayElection();
 
     cout << "Enter the ID of the Election to be edited" << endl;
     cin >> i;
-    i = 100000 - i;
+    i = i - 100000;
 
     if (i <= j)
     {
         cout << "Election name:\t" << Election[i].Name << '\t';
         cout << Election[i].Description << '\t' << endl;
-        cout << "Nominees are:\t";
+        cout << "Nominees are:" << endl;
         for (int k = 1; k <= 6; k++) //nominees output
         {
-            cout << k << ".'\t'" << Election[i].Nominees[k] << '\t';
+            cout << k << ".\t" << Election[i].Nominees[k] << endl;
         }
 
         cout << "Enter the Number to be edited" << endl;
         cin >> n;
-        cout << "Enter the Updated Election description:" << endl;
+        cout << "Enter the Updated Nominee:" << endl;
+        cin.ignore();
         getline(cin, Election[i].Nominees[n]);
 
         displayElection();
