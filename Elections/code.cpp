@@ -170,40 +170,7 @@ void admin_login_signup()
 }
 
 // Adminstrator edit info function, the admin is not allowed to edit key info like id and name
-void editInfo()
-{
-    string n_id;
-    string n_password;
-    string n_email;
-    string n_address;
-    string n_phone;
 
-    cout << "Enter Your UserID :";
-    cin >> n_id;
-
-    for (int i = 0; i < max_admin; i++)
-    {
-        if (admins[i].ID == n_id)
-        {
-            cout << "Enter your new password : ";
-            cin >> n_password;
-            cout << "Enter your new email : ";
-            cin >> n_email;
-            cout << "Enter your new address : ";
-            cin >> n_address;
-            cout << "Enter your new phone number : ";
-            cin >> n_phone;
-
-            admins[i].password = n_password;
-            admins[i].email = n_email;
-            admins[i].address = n_address;
-            admins[i].phone = n_phone;
-
-            cout << "Information updated successfully ! thanks " << admins[i].name << "!" << endl;
-        }
-    }
-    cout << " User not found or please enter a valid UserID !" << endl;
-}
 
 //Administrator privileges:
 
@@ -240,7 +207,47 @@ int inputElection(int& size)//Election registration function
     } while (answer == 'y' || answer == 'Y');
     return result;
 }
-void displayElection() //Election display function
+void editInfo() //Funtion to edit admin's info
+{
+    int i;
+    string n_id;
+    string n_password;
+    string n_email;
+    string n_address;
+    string n_phone;
+
+    cout << "Enter Your UserID :";
+    cin >> n_id;
+
+
+
+
+    for (i = 0; i < max_admin; i++)
+    {
+        if (admins[i].ID == n_id)
+        {
+            cout << "Enter your new password : ";
+            cin >> admins[i].password;
+            cout << "Enter your new email : ";
+            cin >> admins[i].email;
+            cout << "Enter your new address : ";
+            cin >> admins[i].address;
+            cout << "Enter your new phone number : ";
+            cin >> admins[i].phone;
+
+            admins[i].address = n_address;
+            admins[i].phone = n_phone;
+
+            cout << "Information updated successfully ! thanks " << admins[i].name << "!" << endl;
+        }
+
+        else
+            cout << " User not found or please enter a valid UserID !" << endl;
+
+    }
+}
+
+void displayElection() //Election and Nominees' display function
 {
     int n = 0;
     cout << "The registered elections and their candidates are: " << endl;
@@ -273,7 +280,7 @@ void displayElection_only()//Displays the registered elections only
         }
     }
 }
-void admin_menu()
+void admin_menu() //Admin main menu function
 {
     int choice;
 
@@ -294,18 +301,21 @@ void admin_menu()
         {
         case 1:
 
+            editInfo();
+            break;
+
         case 2:
+            system("cls");
 
             int n;
             inputElection(n);
             displayElection_only();
-            system("cls");
             break;
 
         case 3:
+            system("cls");
 
             admin_edit_choices();
-            system("cls");
             break;
 
         case 4:
@@ -316,7 +326,6 @@ void admin_menu()
 
         default:
             cout << "\n\nInvalid Entry , please try again.\n\n" << endl;
-
             break;
 
         }
@@ -324,7 +333,7 @@ void admin_menu()
     } while (choice != 4);
 
 }
-void admin_edit_choices()
+void admin_edit_choices() //Function for Admin to choose to edit election description or nominee 
 {
     int choice;
 
@@ -343,9 +352,11 @@ void admin_edit_choices()
         switch (choice)
         {
         case 1:
+            system("cls");
             edit_Election_Description();
             break;
         case 2:
+            system("cls");
             Edit_Nominee();
             break;
 
@@ -359,18 +370,18 @@ void admin_edit_choices()
     } while (choice != 3);
 
 }
-void edit_Election_Description()
+void edit_Election_Description() //Edit Election Description function
 {
     displayElection_only();
     int i; //The election ID index
-    cout << "Enter the ID of the Election to be edited" << endl;
+    cout << "\nEnter the ID of the Election to be edited" << endl;
     cin >> i;
 
     i = i - 100000;
 
     if (i <= j)
     {
-        cout << "Enter the Updated Election description:" << endl;
+        cout << "\nEnter the Updated Election description:" << endl;
         cin.ignore();
         getline(cin, Election[i].Description);
     }
@@ -379,7 +390,7 @@ void edit_Election_Description()
 
     displayElection_only();
 }
-void Edit_Nominee()
+void Edit_Nominee() //Edit Election Description function
 {
     int i,//The election ID index
         n;//The nominees index
