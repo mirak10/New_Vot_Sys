@@ -5,7 +5,7 @@
 #define max_admin 5
 
 int adminCount = 0;
-int electorCount = 0;
+int electorCount = 1;
 int j = 5; //Election ID counter
 using namespace std;
 
@@ -22,8 +22,6 @@ struct Electorinfo
 	string Phone;
 	int ElectorCode;
 
-
-
 }electors[100];// Elector's struct
 
 
@@ -35,7 +33,7 @@ struct ElectionAdmin {
 	string email;
 	string address;
 	string phone;
-
+	int AdminCode;
 	int numElections = 0; // Number of elections for this administrator
 } admins[5];
 
@@ -49,9 +47,11 @@ struct Election // Struct for storing Election  data
 	string Nominees[100];
 	int Votes[6] = {};
 	int ElectionCode;
+	int ElectionAdminCode;
+
 	int AllowedVoters[10];
 
-	bool Finished;
+	bool Finished = false;
 
 }Election[100];// an array of struct type for storing election data
 
@@ -75,7 +75,9 @@ bool login(ElectionAdmin admins[], int adminCount);
 void editInfo();
 void signup(ElectionAdmin admins[], int& adminCount);
 void admin_page();
-
+void end_election();
+void admindisplayElection();
+void FinishedElection();
 void admin_login_signup(); // administrator login and signup function
 
 
@@ -109,6 +111,7 @@ int main()
 	Election[1].Nominees[2] = "Leslie Charles";
 	Election[1].Nominees[3] = "Mark Johnson";
 	Election[1].ElectionCode = 1;
+	Election[1].ElectionAdminCode = 911;
 
 	Election[2].ID = 100002;
 	Election[2].Name = "Minister";
@@ -124,7 +127,8 @@ int main()
 	Election[3].Nominees[1] = "Naomi Peter";
 	Election[3].Nominees[2] = "Edward George";
 	Election[3].Nominees[3] = "Sandra Oswald";
-	Election[2].ElectionCode = 3;
+	Election[2].ElectionCode = 1;
+
 
 	Election[4].ID = 100004;
 	Election[4].Name = "Minister";
@@ -132,21 +136,18 @@ int main()
 	Election[4].Nominees[1] = "Victor Steven";
 	Election[4].Nominees[2] = "Ahmed Salah";
 	Election[4].Nominees[3] = "Brain Adam";
+	Election[2].ElectionCode = 1;
 
-	electors[0].ID = "test";
-	electors[0].Name = "test";
-	electors[0].Password = "test";
-	electors[0].Email = "test";
-	electors[0].Address = "test";
-	electors[0].Phone = 001;
+
+	electors[0].ID = "toretto";
+	electors[0].Name = "Dominic Toretto";
+	electors[0].Password = "toretto10";
+	electors[0].Email = "torettod@gmail.com";
+	electors[0].Address = "Maadi";
+	electors[0].Phone = 010133;
 	electors[0].ElectorCode = 1;
 
-	admins[0].ID = "admin";
-	admins[0].name = "admin";
-	admins[0].password = "admin";
-	admins[0].email = "admin";
-	admins[0].address = "admin";
-	admins[0].phone = 001;
+
 
 	main_menu();
 }// end of main function
@@ -272,15 +273,17 @@ void Elector_edit_info()
 {
 	int option;
 	bool info_updated = false;
-	string Username;
+	string Username, password;
 	cout << "Enter your Username: ";
 	cin >> Username;
+	cout << "Enter your Password: ";
+	cin >> password;
 
 	bool elector_info_updated = false;
 
 	for (int i = 0; i < num_electors; i++)
 	{
-		if (electors[i].ID == Username) 
+		if (electors[i].ID == Username && electors[i].Password == password)
 		{
 			cout << "\nWelcome! " << electors[i].Name << endl;
 			cout << "\n____You can now edit your details._____\n\n" << endl;
@@ -420,9 +423,12 @@ void elector_login_signup()
 void signup(ElectionAdmin admins[], int& adminCount)
 {
 
+
+
 	if (adminCount < max_admin)
 	{
 		ElectionAdmin admin;
+
 
 		cout << "Please Enter Your Details to Signup.\n" << endl;
 
@@ -444,8 +450,18 @@ void signup(ElectionAdmin admins[], int& adminCount)
 		cout << "Enter Your Phone number(minimum 10 digits.): ";
 		cin >> admin.phone;
 
+
+		admins[0].ID = "admin";
+		admins[0].name = "admin";
+		admins[0].password = "admin";
+		admins[0].email = "admin";
+		admins[0].address = "admin";
+		admins[0].phone = 001;
+		adminCount++;
+
 		admins[adminCount] = admin;
 		adminCount++;
+
 
 
 	}
@@ -482,23 +498,28 @@ bool login(ElectionAdmin admins[], int adminCount)
 void editInfo()
 {
 	int option;
-	string n_id;
+	string n_id, n_pass;
 
 	bool info_updated = false;
 
 	cout << "Enter Your Username :";
 	cin >> n_id;
+	cout << "Enter Your Password :";
+	cin >> n_pass;
 
 
 	for (int i = 0; i < max_admin; i++)
 	{
-		if (admins[i].ID == n_id)
+		if (admins[i].ID == n_id && admins[i].password == n_pass)
 		{
 			cout << "\nWelcome!  " << admins[i].name << endl;
 			cout << "\n______You can Now Edit Your Information________\n\n" << endl;
 			cout << "\t\t\t PRESS 1:To Change Your Password.\n\n" << endl;
 			cout << "\t\t\t PRESS 2:To Change Your Email Address.\n\n" << endl;
-			cout << "\t\t\t PRESS 3:To Change Your Phone Number.\n\n" << endl;
+			cout << "\t\t\t PRESS 3:To Change Your Address.\n\n" << endl;
+			cout << "\t\t\t PRESS 4:To Change Your Phone Number.\n\n" << endl;
+			cout << "\t\t\t PRESS 5:To Previous Menu.\n\n" << endl;
+
 			cout << "Enter Your Option:";
 			cin >> option;
 			switch (option)
@@ -524,6 +545,8 @@ void editInfo()
 				break;
 
 			case 5:
+				system("cls");
+				admin_page();
 				break;
 
 			case 6:
@@ -649,7 +672,7 @@ void elector_page()
 			break;
 		case 3:
 			system("cls");
-			displayVotes();
+			FinishedElection();
 			break;
 		case 4:
 			system("cls");
@@ -667,7 +690,7 @@ void elector_page()
 
 void admin_page()
 {
-
+	bool endelection = false;
 	int option;
 	cout << endl;
 
@@ -679,13 +702,15 @@ void admin_page()
 		cout << "\t\t\t Press 3:To Edit Election's Description\n\n" << endl;
 		cout << "\t\t\t Press 4:To Delete a Nominee\n\n" << endl;
 		cout << "\t\t\t Press 5:To End an Election\n\n" << endl;
-		cout << "\t\t\t Press 6:To Exit the page\n\n" << endl;
+		cout << "\t\t\t Press 6:To Elector's Profile \n\n" << endl;
+		cout << "\t\t\t Press 7:To Log Out\n\n" << endl;
 
 		cout << "Enter Your Option:";
 		cin >> option;
 		switch (option)
 		{
 		case 1:
+			system("cls");
 			editInfo();
 			break;
 
@@ -694,7 +719,7 @@ void admin_page()
 
 			int n;
 			inputElection(n);
-			displayElection_only();
+			admindisplayElection();
 			break;
 
 		case 3:
@@ -708,9 +733,18 @@ void admin_page()
 			break;
 
 		case 5:
+			system("cls");
+			end_election();
+
+
 			break;
 
 		case 6:
+			system("cls");
+			elector_login_signup();
+			break;
+
+		case 7:
 			system("cls");
 			cout << "\n\nGoodbye! Thanks for Your time!." << endl;
 			break;
@@ -724,7 +758,7 @@ void admin_page()
 		}
 
 
-	} while (option != 6);
+	} while (option != 7);
 
 
 }
@@ -736,9 +770,15 @@ void admin_page()
 int inputElection(int& size)//Election registration function
 {
 	int result = j;
+	int adminCode;
 	char answer;
+
+	cout << "Enter your Admin code: " << endl;
+	cin >> adminCode;
 	do
 	{
+
+		Election[j].ElectionAdminCode = adminCode;
 		cout << "Enter Election name:" << endl;
 		cin.ignore();
 		getline(cin, Election[j].Name);
@@ -746,7 +786,7 @@ int inputElection(int& size)//Election registration function
 		cout << "Enter Election description:" << endl;
 		getline(cin, Election[j].Description);
 
-		Election[j].ElectionCode = 1 + (rand()%3);
+		Election[j].ElectionCode = 1 + (rand() % 3);
 		cout << "The ELection CODE is: " << Election[j].ElectionCode << endl;
 
 		Election[j].ID = 100000 + j;
@@ -796,11 +836,11 @@ void displayElection_only()//Displays the registered elections only
 	{
 		cout << "The registered elections are: " << endl;
 
-		
+
 		for (int i = 0; i < j; i++)
 		{
 			if (electors[i].ElectorCode == Election[i].ElectionCode)
-			
+
 			{
 				cout << Election[i].ID << '\t';
 				cout << "Election name:\t" << Election[i].Name << '\t';
@@ -812,7 +852,7 @@ void displayElection_only()//Displays the registered elections only
 
 void edit_Election_Description() //Edit Election Description function
 {
-	displayElection_only();
+	admindisplayElection();
 	int i; //The election ID index
 	cout << "\nEnter the ID of the Election to be edited" << endl;
 	cin >> i;
@@ -828,7 +868,7 @@ void edit_Election_Description() //Edit Election Description function
 	else
 		cout << "Invalid Election ID.";
 
-	displayElection_only();
+	admindisplayElection();
 }
 
 void Edit_Nominee() //Edit Election Description function
@@ -836,13 +876,13 @@ void Edit_Nominee() //Edit Election Description function
 	int i,//The election ID index
 		n;//The nominees index
 
-	displayElection();
+	admindisplayElection();
 
 	cout << "Enter the ID of the Election to be edited" << endl;
 	cin >> i;
 	i = i - 100000;
 
-	if (i <= j)
+	if (i >= 0 && i <= j)
 	{
 		cout << "Election name:\t" << Election[i].Name << '\t';
 		cout << Election[i].Description << '\t' << endl;
@@ -858,7 +898,6 @@ void Edit_Nominee() //Edit Election Description function
 		cin.ignore();
 		getline(cin, Election[i].Nominees[n]);
 
-		displayElection();
 	}
 	else
 	{
@@ -913,7 +952,6 @@ void Electors_vote() //Edit Election Description function
 }
 void displayVotes() //Election and Nominees' display function
 {
-	int n = 0;
 	cout << "The registered elections and their candidates are: " << endl;
 
 	for (int i = 0; i < j; i++)
@@ -939,20 +977,73 @@ void displayVotes() //Election and Nominees' display function
 
 void admindisplayElection() //Election and Nominees' display function
 {
-	int n = 0;
+	int i;
+	int admincode;
+	cout << "Enter your Admin Code" << endl;
+	cin >> admincode;
+
+
 	cout << "The registered elections and their candidates are: " << endl;
 
 	for (int i = 0; i < j; i++)
 	{
-		cout << Election[i].ID << '\t';
-		cout << "Election name:\t" << Election[i].Name << '\t';
-		cout << Election[i].Description << '\t' << endl;
-
-		cout << "Nominees are:" << endl;
-		for (int k = 1; k <= 6; k++) //nominees output
+		if (admincode == Election[i].ElectionAdminCode)
 		{
-			cout << k << ".\t" << Election[i].Nominees[k] << endl;
+			cout << Election[i].ID << '\t';
+			cout << "Election name:\t" << Election[i].Name << '\t';
+			cout << Election[i].Description << '\t' << endl;
 		}
 
+
 	}
+
+
+}
+
+
+void end_election()
+{
+	admindisplayElection();
+	int i;
+
+	cout << "Enter the ID of the Election to end" << endl;
+	cin >> i;
+	i = i - 100000;
+
+	if (i >= 0 && i <= j)
+	{
+		cout << "Election name:\t" << Election[i].Name << '\t';
+		cout << Election[i].Description << endl;
+
+		Election[i].Finished = true;
+
+		cout << "You have successfully ended the Election" << endl;
+
+	}
+	else
+	{
+		cout << "I'm sorry, that is an invalid selection.\n"
+			<< "The speakers range from 0-9.\n"
+			<< "Please select this option again.\n\n";
+	}
+}
+
+void FinishedElection() //Election and Nominees' display function
+{
+
+	cout << "The following are the finished Elections:\n\n " << endl;
+
+	for (int i = 0; i < j; i++)
+	{
+		if (Election[i].Finished == true)
+		{
+			cout << Election[i].ID << '\t';
+			cout << "Election name:\t" << Election[i].Name << '\t';
+			cout << Election[i].Description << '\t' << endl;
+		}
+
+
+	}
+
+
 }
